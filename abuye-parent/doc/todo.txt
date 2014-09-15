@@ -1,0 +1,11 @@
+框架目标
+1. mvc
+2. jdbc
+4. log，exception
+5. 各种配置服务：数据字典，菜单，请求资源（请求地址与参数），用户角色群组
+7. 权限认证，资源控制
+8. 基础服务：附件，邮件发送，EXCEL导出，定时任务配置，报表自定义，版本管理，元数据维护
+9. 流程引擎，规则引擎
+10. webservie, restful(jercy), rmi(hesson), oauth2.0
+3. validate
+6. 缓存

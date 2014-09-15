@@ -1,0 +1,159 @@
+PARSER_BEGIN(QueryParser)  
+import java.io.StringReader; 
+import java.io.Reader;
+import com.entity.ConditionItem;
+import com.entity.ParserUtils;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SearchLogic{
+	public SearchLogic(String searchLogicString){
+		this((Reader)(new StringReader(searchLogicString)));
+	}
+}
+  
+PARSER_END(SearchLogic)  
+  
+SKIP :
+{" " | "\t" | "\n" | "\r"}  
+
+TOKEN :
+{
+	<PARAM : "-"(["a"-"z","A"-"Z","0"-"9"])+"-">
+}
+
+TOKEN [IGNORE_CASE] :
+{
+	<EQUALS : "_e">
+	|<GREAT_THAN : "_g">
+	|<LESS_THAN : "_l">
+	|<GREAT_THAN_OR_EQUAL_TO : "_ge">
+	|<LESS_THAN_OR_EQUAL_TO : "_le">
+	|<NULL : "_nl">
+	|<NOT_EQUAL : "_ne">
+	|<NOT_NULL : "_nnl">
+	|<LIKE : "_lk">
+	|<START_WITH : "_sw">
+	|<END_WITH : "_ew">
+	|<NOT_START_WITH : "_nsw">
+	|<NOT_END_WITH : "_new">
+	|<NOT_LIKE : "_nlk">
+	|<BLANK : "_bk">
+	|<ASC : "_ac">
+	|<DESC : "_dc">
+	|<DESC_NULL_FIRST : "_dcf">
+	|<ASC_NULL_LAST : "_acl">
+	|<OR : "_o">
+	|<AND : "_a">
+	|<LEFT_PARENTHESIS : "_lp">
+	|<RIGHT_PARENTHESIS : "_rp">
+}
+
+List exe():
+{
+	List result;
+}
+{
+	result=conditionItems()<EOF>
+	{ return result; }
+}
+
+List conditionItems():
+{
+	List result=new ArrayList();
+}
+{
+	(
+		{
+			ConditionItem item = new ConditionItem();
+			String logic;
+			String paramName;
+			String operator;
+			List items;
+		}
+		(
+			[
+				logic = opLogic()
+				{ item.setLogic(ParserUtils.removeChar(logic, '_')); }
+			]
+			(
+				paramName = paramName()
+				{ item.setParamName(paramName); }
+				[ 
+				   operator = opCompare()
+				   { item.setOperator(ParserUtils.removeChar(operator, '_')); }
+				]
+			)
+			|
+			(
+				<LEFT_PARENTHESIS>items = conditionItems()<RIGHT_PARENTHESIS>
+				{ item.setItems(items); }
+			)
+		)
+		{
+			result.add(item);
+		}
+	)+
+	{
+		return result;
+	}
+}
+
+String opLogic():
+{
+	Token t;
+}
+{
+	t=<OR>
+	{ return t.image; }
+	|t=<AND>
+	{ return t.image; }
+}
+
+String opCompare():
+{
+	Token t;
+}
+{
+	t=<EQUALS>
+	{ return t.image; }
+	|t=<GREAT_THAN>
+	{ return t.image; }
+	|t=<LESS_THAN>
+	{ return t.image; }
+	|t=<GREAT_THAN_OR_EQUAL_TO>
+	{ return t.image; }
+	|t=<LESS_THAN_OR_EQUAL_TO>
+	{ return t.image; }
+	|t=<NULL>
+	{ return t.image; }
+	|t=<NOT_EQUAL>
+	{ return t.image; }
+	|t=<NOT_NULL>
+	{ return t.image; }
+	|t=<LIKE>
+	{ return t.image; }
+	|t=<START_WITH>
+	{ return t.image; }
+	|t=<END_WITH>
+	{ return t.image; }
+	|t=<NOT_START_WITH>
+	{ return t.image; }
+	|t=<NOT_END_WITH>
+	{ return t.image; }
+	|t=<NOT_LIKE>
+	{ return t.image; }
+	|t=<BLANK>
+	{ return t.image; }
+}
+
+String paramName():
+{
+	Token t;
+}
+{
+	t=<PARAM>
+	{ return ParserUtils.removeChar(t.image, '-'); }
+}
+
+

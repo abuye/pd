@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.abuye</groupId>
+  <artifactId>abuye-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>abuye-parent</name>
+  <url>http://www.abuye.com</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.7</java.version>
+    <servlet.version>3.0.1</servlet.version>
+    <jetty.version>9.1.2.v20140210</jetty.version>
+    <jsr250.version>1.0</jsr250.version>
+    <javax.inject.version>1</javax.inject.version>
+
+    <slf4j.version>1.7.6</slf4j.version>
+    <logback.version>1.1.1</logback.version>
+
+    <spring.version>4.0.2.RELEASE</spring.version>
+    <spring-data-jpa.version>1.4.4.RELEASE</spring-data-jpa.version>
+    <spring.data.commons.version>1.6.4.RELEASE</spring.data.commons.version>
+    
+    <commons-lang3.version>3.2.1</commons-lang3.version>
+    <commons-io.version>2.4</commons-io.version>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <modules>
+    <module>abuye-web-auth</module>
+    <module>abuye-server-jetty</module>
+    <module>abuye-core</module>
+    <module>abuye-javacc-parser</module>
+    <module>abuye-web-db</module>
+    <module>abuye-server-h2</module>
+    <module>abuye-web-pd</module>
+  </modules>
+</project>
